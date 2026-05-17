@@ -1,42 +1,48 @@
 import React, { useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useSpring, useTransform } from 'framer-motion';
 import { Trophy, X, Sparkles } from 'lucide-react';
-import CountUp from 'react-countup';
 import { getPerformanceMessage } from '../../utils/calculator';
 import { triggerPremiumConfetti } from '../../utils/confetti';
 
 const ResultModal = ({ isOpen, onClose, percentage, totalPoints }) => {
+  const springValue = useSpring(0, { stiffness: 40, damping: 15 });
+  const displayValue = useTransform(springValue, (current) => current.toFixed(2));
+
   useEffect(() => {
     if (isOpen) {
       triggerPremiumConfetti();
+      springValue.set(percentage);
+    } else {
+      springValue.set(0);
     }
-  }, [isOpen]);
-
-  if (!isOpen) return null;
+  }, [isOpen, percentage, springValue]);
 
   const performance = getPerformanceMessage(percentage);
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-hidden">
-        {/* Backdrop Blur overlay */}
-        <motion.div
+      {isOpen && (
+        <motion.div 
+          key="modal-overlay"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          onClick={onClose}
-          className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
-        />
-        
-        {/* Modal Container with glowing effect */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 30 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 30 }}
-          transition={{ type: "spring", damping: 25, stiffness: 300 }}
-          className="relative w-full max-w-lg mx-auto"
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-hidden"
         >
+          {/* Backdrop Blur overlay */}
+          <div
+            onClick={onClose}
+            className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
+          />
+          
+          {/* Modal Container with glowing effect */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 30 }}
+            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            className="relative w-full max-w-lg mx-auto"
+          >
           {/* Animated Glowing border effect */}
           <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-[2rem] blur opacity-30 animate-pulse" />
           
@@ -71,16 +77,9 @@ const ResultModal = ({ isOpen, onClose, percentage, totalPoints }) => {
                   Final Result
                 </h2>
                 <div className="flex items-center justify-center text-indigo-950 font-extrabold tracking-tighter">
-                  <span className="text-[5rem] sm:text-[6rem] leading-none">
-                    {isOpen && (
-                      <CountUp 
-                        end={percentage} 
-                        decimals={2} 
-                        duration={2.5} 
-                        useEasing={true}
-                      />
-                    )}
-                  </span>
+                  <motion.span className="text-[5rem] sm:text-[6rem] leading-none">
+                    {displayValue}
+                  </motion.span>
                   <span className="text-4xl sm:text-5xl text-slate-300 ml-2">%</span>
                 </div>
               </motion.div>
@@ -116,8 +115,9 @@ const ResultModal = ({ isOpen, onClose, percentage, totalPoints }) => {
               </motion.button>
             </div>
           </div>
+          </motion.div>
         </motion.div>
-      </div>
+      )}
     </AnimatePresence>
   );
 };

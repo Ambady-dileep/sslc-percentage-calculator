@@ -227,6 +227,10 @@ const App = () => {
         </div>
       </main>
 
+      <footer className="text-center py-6 pb-24 sm:pb-6 text-slate-500 text-sm font-medium relative z-10">
+        Developed by <span className="text-indigo-600 font-bold">Ambady Dileep</span>
+      </footer>
+
       <ResultModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
