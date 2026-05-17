@@ -85,8 +85,8 @@ const App = () => {
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9IiM5NGExYjIiIGZpbGwtb3BhY2l0eT0iMC4xNSIvPjwvc3ZnPg==')] opacity-40" />
       </div>
 
-      <main className="w-full max-w-lg mx-auto flex flex-col relative z-10 px-4 pt-6 pb-8">
-        {/* Header - Compact */}
+      <main className="w-full max-w-lg mx-auto flex flex-col relative z-10 px-4 pt-6 pb-8 flex-1">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -97,14 +97,30 @@ const App = () => {
             <Calculator size={20} strokeWidth={2.5} />
           </div>
           <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight text-left leading-tight">
-            SSLC Percentage<br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 text-lg sm:text-xl">
+            {"Kerala SSLC Percentage".split("").map((char, i) => (
+              <motion.span
+                key={i}
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.03, type: 'spring', damping: 18 }}
+                className="inline-block"
+              >
+                {char === " " ? "\u00A0" : char}
+              </motion.span>
+            ))}
+            <br/>
+            <motion.span
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.8, type: 'spring', damping: 16 }}
+              className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 text-lg sm:text-xl block"
+            >
               Calculator
-            </span>
+            </motion.span>
           </h1>
         </motion.div>
 
-        {/* Progress Bar Header - Ultra Compact */}
+        {/* Progress Bar */}
         <div className="bg-white/80 backdrop-blur-xl p-3 sm:p-4 rounded-2xl border border-slate-100 shadow-sm shrink-0 mb-4">
           <div className="flex justify-between items-center mb-2">
             <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
@@ -133,7 +149,7 @@ const App = () => {
           </div>
         </div>
 
-        {/* Grades Grid - Auto fitting 3x3 to maximize space */}
+        {/* Grades Grid */}
         <div className="w-full mb-2">
           <div className="grid grid-cols-3 gap-2 sm:gap-3 pb-2">
             {GRADES.map((grade, index) => (
@@ -148,7 +164,10 @@ const App = () => {
           </div>
         </div>
 
-        {/* Footer actions inside the main flow, pinned to bottom securely */}
+        {/* Spacer - nudges buttons down slightly without pinning to very bottom */}
+        <div className="flex-1 max-h-12" />
+
+        {/* Footer actions */}
         <div className="shrink-0 pt-3">
           <div className="flex gap-2 sm:gap-3 items-stretch">
             <motion.button
