@@ -75,17 +75,17 @@ const App = () => {
   const isComplete = totalSelected === TOTAL_SUBJECTS;
 
   return (
-    <div className="h-[100dvh] w-full relative overflow-hidden bg-slate-50 flex flex-col font-sans selection:bg-indigo-200">
+    <div className="min-h-screen w-full relative overflow-x-hidden bg-slate-50 flex flex-col font-sans selection:bg-indigo-200">
       <Toaster position="top-center" />
       
       {/* Animated Premium Background Effects */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-indigo-300/30 rounded-full blur-[80px] animate-blob mix-blend-multiply" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-300/30 rounded-full blur-[80px] animate-blob mix-blend-multiply" style={{ animationDelay: '2s' }} />
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9IiM5NGExYjIiIGZpbGwtb3BhY2l0eT0iMC4xNSIvPjwvc3ZnPg==')] opacity-40" />
       </div>
 
-      <main className="flex-1 w-full max-w-lg mx-auto flex flex-col relative z-10 px-4 pt-6 pb-4">
+      <main className="w-full max-w-lg mx-auto flex flex-col relative z-10 px-4 pt-6 pb-8">
         {/* Header - Compact */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -134,8 +134,8 @@ const App = () => {
         </div>
 
         {/* Grades Grid - Auto fitting 3x3 to maximize space */}
-        <div className="flex-1 min-h-0 overflow-y-auto w-full custom-scrollbar">
-          <div className="grid grid-cols-3 gap-2 sm:gap-3 h-full content-start pb-2">
+        <div className="w-full mb-2">
+          <div className="grid grid-cols-3 gap-2 sm:gap-3 pb-2">
             {GRADES.map((grade, index) => (
               <GradeSelector
                 key={grade.label}
