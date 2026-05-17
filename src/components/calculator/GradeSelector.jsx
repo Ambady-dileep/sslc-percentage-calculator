@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Minus } from 'lucide-react';
 
-const GradeSelector = ({ grade, count, onChange, index }) => {
+const GradeSelector = ({ grade, count, onChange, index, isMaxReached }) => {
   const handleIncrement = () => {
     if (count < 10) onChange(grade.label, count + 1);
   };
@@ -53,7 +53,7 @@ const GradeSelector = ({ grade, count, onChange, index }) => {
 
         <button
           onClick={handleIncrement}
-          disabled={count === 10}
+          disabled={count === 10 || isMaxReached}
           className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center bg-white text-slate-500 hover:text-indigo-600 hover:shadow-sm disabled:opacity-40 disabled:hover:shadow-none transition-all active:scale-90 shrink-0"
           aria-label="Increase"
         >

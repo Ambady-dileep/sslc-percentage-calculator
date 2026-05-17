@@ -26,10 +26,6 @@ const App = () => {
       const newTotal = Object.values(newCounts).reduce((sum, c) => sum + c, 0);
       
       if (newTotal > TOTAL_SUBJECTS) {
-        toast.error(`Maximum ${TOTAL_SUBJECTS} subjects allowed`, {
-          icon: '⚠️',
-          style: { borderRadius: '12px', background: '#1e293b', color: '#fff', padding: '12px', fontSize: '14px' },
-        });
         return prev;
       }
       return newCounts;
@@ -159,6 +155,7 @@ const App = () => {
                 count={gradeCounts[grade.label]}
                 onChange={handleGradeChange}
                 index={index}
+                isMaxReached={totalSelected >= TOTAL_SUBJECTS}
               />
             ))}
           </div>
@@ -221,9 +218,18 @@ const App = () => {
             </motion.button>
           </div>
           
-          <div className="text-center mt-3 text-slate-400/80 text-[10px] font-medium tracking-wide">
-            DEVELOPED BY <span className="text-indigo-400 font-bold">AMBADY DILEEP</span>
-          </div>
+          <div className="text-center mt-3 text-[11px] sm:text-xs font-medium tracking-wide text-slate-400">
+  DEVELOPED BY{" "}
+  
+  <a
+    href="https://instagram.com/ambady.dileep"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent hover:opacity-80 transition"
+  >
+    @ambady.dileep
+  </a>
+</div>
         </div>
       </main>
 
