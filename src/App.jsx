@@ -1,12 +1,14 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calculator, AlertCircle, RotateCcw } from 'lucide-react';
+import { Calculator, AlertCircle, RotateCcw, MessageCircleQuestion } from 'lucide-react';
 import { Toaster, toast } from 'react-hot-toast';
 
 import { GRADES, TOTAL_SUBJECTS } from './constants/grades';
 import { calculatePercentage } from './utils/calculator';
 import GradeSelector from './components/calculator/GradeSelector';
 import ResultModal from './components/calculator/ResultModal';
+import SEOSection from './components/FAQSection';
+
 
 const App = () => {
   const [gradeCounts, setGradeCounts] = useState(
@@ -67,6 +69,9 @@ const App = () => {
     }, 600);
   };
 
+  const scrollToFAQ = () => {
+    document.getElementById('faq-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
   const progressPercentage = (totalSelected / TOTAL_SUBJECTS) * 100;
   const isComplete = totalSelected === TOTAL_SUBJECTS;
 
@@ -82,39 +87,63 @@ const App = () => {
       </div>
 
       <main className="w-full max-w-lg mx-auto flex flex-col relative z-10 px-4 pt-6 pb-8 flex-1">
-        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
+  initial={{ opacity: 0, y: -20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.5, type: 'spring', damping: 20 }}
+  className="text-center mb-4 shrink-0 flex items-center justify-between gap-3"
+>
+  {/* Left: icon + title */}
+  <div className="flex items-center gap-3">
+    <div className="w-10 h-10 flex items-center justify-center bg-white/60 backdrop-blur-xl text-indigo-600 rounded-xl shadow-md shadow-indigo-100 border border-white">
+      <Calculator size={20} strokeWidth={2.5} />
+    </div>
+    <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight text-left leading-tight">
+      {"Kerala SSLC Percentage".split("").map((char, i) => (
+        <motion.span
+          key={i}
+          initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, type: 'spring', damping: 20 }}
-          className="text-center mb-4 shrink-0 flex items-center justify-center gap-3"
+          transition={{ delay: i * 0.03, type: 'spring', damping: 18 }}
+          className="inline-block"
         >
-          <div className="w-10 h-10 flex items-center justify-center bg-white/60 backdrop-blur-xl text-indigo-600 rounded-xl shadow-md shadow-indigo-100 border border-white">
-            <Calculator size={20} strokeWidth={2.5} />
-          </div>
-          <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight text-left leading-tight">
-            {"Kerala SSLC Percentage".split("").map((char, i) => (
-              <motion.span
-                key={i}
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.03, type: 'spring', damping: 18 }}
-                className="inline-block"
-              >
-                {char === " " ? "\u00A0" : char}
-              </motion.span>
-            ))}
-            <br/>
-            <motion.span
-              initial={{ opacity: 0, scale: 0.85 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.8, type: 'spring', damping: 16 }}
-              className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 text-lg sm:text-xl block"
-            >
-              Calculator
-            </motion.span>
-          </h1>
-        </motion.div>
+          {char === " " ? "\u00A0" : char}
+        </motion.span>
+      ))}
+      <br/>
+      <motion.span
+        initial={{ opacity: 0, scale: 0.85 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.8, type: 'spring', damping: 16 }}
+        className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 text-lg sm:text-xl block"
+      >
+        Calculator
+      </motion.span>
+    </h1>
+  </div>
+
+  {/* Right: FAQ button */}
+  <motion.button
+    onClick={scrollToFAQ}
+    whileHover={{ scale: 1.1 }}
+    whileTap={{ scale: 0.92 }}
+    initial={{ opacity: 0, x: 10 }}
+    animate={{ opacity: 1, x: 0 }}
+    transition={{ delay: 1, type: 'spring', damping: 16 }}
+    aria-label="View FAQ"
+    title="Frequently Asked Questions"
+    className="relative shrink-0 w-9 h-9 flex items-center justify-center bg-white/70 backdrop-blur-xl border border-indigo-100 rounded-xl shadow-sm shadow-indigo-100 text-indigo-500 hover:text-indigo-700 hover:border-indigo-300 hover:shadow-indigo-200 transition-all duration-200 group"
+  >
+    <motion.div
+      animate={{ rotate: [0, -8, 8, -4, 0] }}
+      transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut', repeatDelay: 2 }}
+    >
+      <MessageCircleQuestion size={17} strokeWidth={2.5} />
+    </motion.div>
+    {/* Pulse ring */}
+    <span className="absolute inset-0 rounded-xl ring-2 ring-indigo-400/0 group-hover:ring-indigo-400/30 transition-all duration-300" />
+  </motion.button>
+</motion.div>
 
         {/* Progress Bar */}
         <div className="bg-white/80 backdrop-blur-xl p-3 sm:p-4 rounded-2xl border border-slate-100 shadow-sm shrink-0 mb-4">
@@ -219,26 +248,27 @@ const App = () => {
           </div>
           
           <div className="text-center mt-3 text-[11px] sm:text-xs font-medium tracking-wide text-slate-400">
-  DEVELOPED BY{" "}
-  
-  <a
-    href="https://instagram.com/ambady.dileep"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent hover:opacity-80 transition"
-  >
-    @ambady.dileep
-  </a>
-</div>
+            DEVELOPED BY{" "}
+            
+            <a
+              href="https://instagram.com/ambady.dileep"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent hover:opacity-80 transition"
+            >
+              @ambady.dileep
+            </a>
+          </div>
         </div>
       </main>
-
+                
       <ResultModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         percentage={result.percentage}
         totalPoints={result.totalPoints}
       />
+      <SEOSection />
     </div>
   );
 };
